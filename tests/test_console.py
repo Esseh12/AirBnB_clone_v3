@@ -18,6 +18,7 @@ class TestConsoleDocs(unittest.TestCase):
         result = pep8s.check_files(['console.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
+        
 
     def test_pep8_conformance_test_console(self):
         """Test that tests/test_console.py conforms to PEP8."""
