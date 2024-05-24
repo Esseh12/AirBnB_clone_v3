@@ -26,7 +26,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns the dictionary __objects"""
-        if cls is not None:
+        if cls:
             new_dict = {}
             for key, value in self.__objects.items():
                 if cls == value.__class__ or cls == value.__class__.__name__:
@@ -75,12 +75,16 @@ class FileStorage:
         id: string representing the object ID
         Returns the object based on the class and its ID, or None if not found
         """
-        all_objs_of_cls = self.all(cls)
-        for key, value in all_objs_of_cls.items():
-            if key.split('.')[1] == id:
-                return value
+        if cls and id:
+            if cls in classes.values():
+                all_objs_of_cls = self.all(cls)
+
+                for value in all_objs_of_cls.values():
+                    if value.id == id:
+                        return value
+            return None
         return None
-    
+
     def count(self, cls=None):
         """This method count the number of objects in storage:
             cls: class (optional)
@@ -88,4 +92,8 @@ class FileStorage:
                 If no class is passed, returns the count of all objects
                 in storage.
         """
+        if not cls:
+            all_objs = self.all()
+        if cls in classes.values():
+            allObjs_of_cls = self.all(cls)
         return len(self.all(cls))
