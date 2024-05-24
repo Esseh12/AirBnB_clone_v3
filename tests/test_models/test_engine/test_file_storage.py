@@ -125,3 +125,19 @@ class TestFileStorage(unittest.TestCase):
         storage.save()
         retrieved_state = storage.get(State, state_instance.id)
         self.assertEqual(retrieved_state, state_instance)
+
+    def test_count(self):
+        """test for getting the count of all objects
+            or for specific given class
+        """
+        storage = FileStorage()
+
+        storage.reload()
+
+        initial_number_of_all_objs = storage.count()
+
+        state_instance = State(name="Kano")
+        storage.new(state_instance)
+        storage.save()
+        current_number_of_all_objs = storage.count()
+        self.assertLess(initial_number_of_all_objs, current_number_of_all_objs)
