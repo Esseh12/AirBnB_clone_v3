@@ -93,7 +93,7 @@ class FileStorage:
                 in storage.
         """
         if cls:
-            if cls in classes.values():
+            if cls in classes.values() or classes.keys():
                 allObjs_of_cls = self.all(cls)
                 return len(allObjs_of_cls)
         else:
