@@ -5,30 +5,30 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request
 from werkzeug.exceptions import NotFound, BadRequest
 from models import storage
-from models.state import State
+from models.amenity import amenity
 
 
-@app_views.get('/states', strict_slashes=False)
-def states():
+@app_views.get('/amenities', strict_slashes=False)
+def amenities():
     """return api status"""
-    st = storage.all('State').values()
-    all_states = [v.to_dict() for v in st]
-    return jsonify(all_states)
+    st = storage.all('amenity').values()
+    all_amenities = [v.to_dict() for v in st]
+    return jsonify(all_amenities)
 
 
-@app_views.get('/states/<state_id>')
-def get_state(state_id):
+@app_views.get('/amenities/<amenity_id>')
+def get_amenity(amenity_id):
     """return api status"""
-    st = storage.get('State', state_id)
+    st = storage.get('amenity', amenity_id)
     if st:
         return jsonify(st.to_dict())
     else:
         raise NotFound()
 
 
-@app_views.delete('/states/<state_id>', strict_slashes=False)
-def state_delete(state_id):
-    st = storage.get('State', state_id)
+@app_views.delete('/amenities/<amenity_id>', strict_slashes=False)
+def amenity_delete(amenity_id):
+    st = storage.get('amenity', amenity_id)
     if st:
         storage.delete(st)
         return jsonify({}), 200
@@ -36,26 +36,26 @@ def state_delete(state_id):
         abort(404)
 
 
-@app_views.post('/states', strict_slashes=False)
-def create_state():
+@app_views.post('/amenities', strict_slashes=False)
+def create_amenity():
     data = request.get_json()
     if not isinstance(data, dict):
         raise BadRequest(description='Not a JSON')
     if 'name' not in data:
         raise BadRequest(description="Missing name")
-    obj = State(**data)
+    obj = amenity(**data)
     obj.save()
     return jsonify(obj.to_dict()), 201
 
 
-@app_views.put('/states/<state_id>', strict_slashes=False)
-def update_state(state_id):
+@app_views.put('/amenities/<amenity_id>', strict_slashes=False)
+def update_amenity(amenity_id):
     data = request.get_json()
     if not isinstance(data, dict):
         raise BadRequest(description='Not a JSON')
     if 'name' not in data:
         raise BadRequest(description="Missing name")
-    st = storage.get('State', state_id)
+    st = storage.get('amenity', amenity_id)
     if not st:
         NotFound(404)
     for k, v in data.items():
