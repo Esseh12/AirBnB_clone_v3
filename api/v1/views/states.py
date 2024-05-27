@@ -3,6 +3,7 @@
 
 from api.v1.views import app_views
 from flask import jsonify, redirect
+from werkzeug.exceptions import NotFound
 from models import storage
 
 
@@ -21,4 +22,4 @@ def get_state(state_id):
     if st:
         return jsonify(st.to_dict())
     else:
-        return redirect('/404')
+        raise NotFound()
