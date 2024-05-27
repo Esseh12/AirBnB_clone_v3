@@ -2,7 +2,7 @@
 """ contains routes for the api"""
 
 from api.v1.views import app_views
-from flask import jsonify, redirect
+from flask import jsonify, abort
 from werkzeug.exceptions import NotFound
 from models import storage
 
@@ -22,4 +22,4 @@ def get_state(state_id):
     if st:
         return jsonify(st.to_dict())
     else:
-        raise NotFound()
+        abort(404)
