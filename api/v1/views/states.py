@@ -7,7 +7,7 @@ from werkzeug.exceptions import NotFound
 from models import storage
 
 
-@app_views.route('/states', methods=['GET'])
+@app_views.route('/states', strict_slashes=False, methods=['GET'])
 def states():
     """return api status"""
     st = storage.all('State').values()
@@ -25,7 +25,11 @@ def states():
 #         raise NotFound()
 
 
-@app_views.delete('/states/<state_id>')
-def state_delete(state_id):
-        st = storage.get('State', state_id)
+@app_views.delete('/states/<state_id>', strict_slashes=False)
+def state_delete(state_id):    
+    st = storage.get('State', state_id)
+    if st:
         storage.delete(st)
+        return jsonify({}), 200
+    else:
+        abort(404)
