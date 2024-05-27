@@ -58,7 +58,7 @@ def update_state(state_id):
     st = storage.get('State', state_id)
     if not st:
         NotFound(404)
-    for k,v in data.items():
+    for k, v in data.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(st, k, v)
     st.save()
