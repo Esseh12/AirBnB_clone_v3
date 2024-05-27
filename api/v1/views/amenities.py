@@ -5,13 +5,13 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request
 from werkzeug.exceptions import NotFound, BadRequest
 from models import storage
-from models.amenity import amenity
+from models.amenity import Amenity
 
 
 @app_views.get('/amenities', strict_slashes=False)
 def amenities():
     """return api status"""
-    st = storage.all('amenity').values()
+    st = storage.all('Amenity').values()
     all_amenities = [v.to_dict() for v in st]
     return jsonify(all_amenities)
 
@@ -19,7 +19,7 @@ def amenities():
 @app_views.get('/amenities/<amenity_id>')
 def get_amenity(amenity_id):
     """return api status"""
-    st = storage.get('amenity', amenity_id)
+    st = storage.get('Amenity', amenity_id)
     if st:
         return jsonify(st.to_dict())
     else:
@@ -28,7 +28,7 @@ def get_amenity(amenity_id):
 
 @app_views.delete('/amenities/<amenity_id>', strict_slashes=False)
 def amenity_delete(amenity_id):
-    st = storage.get('amenity', amenity_id)
+    st = storage.get('Amenity', amenity_id)
     if st:
         storage.delete(st)
         return jsonify({}), 200
@@ -43,7 +43,7 @@ def create_amenity():
         raise BadRequest(description='Not a JSON')
     if 'name' not in data:
         raise BadRequest(description="Missing name")
-    obj = amenity(**data)
+    obj = Amenity(**data)
     obj.save()
     return jsonify(obj.to_dict()), 201
 
@@ -55,7 +55,7 @@ def update_amenity(amenity_id):
         raise BadRequest(description='Not a JSON')
     if 'name' not in data:
         raise BadRequest(description="Missing name")
-    st = storage.get('amenity', amenity_id)
+    st = storage.get('Amenity', amenity_id)
     if not st:
         NotFound(404)
     for k, v in data.items():
