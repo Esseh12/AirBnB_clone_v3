@@ -25,15 +25,6 @@ def states():
 #         raise NotFound()
 
 
-@app_views.get('/states/<state_id>')
-def get_state(state_id):
-    """return api status"""
-    st = storage.get('State', state_id)
-    if st:
-        return jsonify(st.to_dict())
-    else:
-        raise NotFound()
-
 @app_views.delete('/states/<state_id>')
 def state_delete(state_id):
         st = storage.get('State', state_id)
