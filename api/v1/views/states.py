@@ -14,11 +14,11 @@ def states():
     return jsonify(all_states)
 
 
-@app_views.route('/states/<state_id>')
-def get_state(state_id):
-    """return api status"""
-    st = storage.get('State', state_id)
-    if st:
-        return jsonify(st.to_dict())
-    else:
-        return redirect('/404')
+# @app_views.route('/states/<state_id>')
+# def get_state(state_id):
+#     """return api status"""
+#     st = storage.get('State', state_id)
+#     if st:
+#         return jsonify(st.to_dict())
+#     else:
+#         return redirect('/404')
