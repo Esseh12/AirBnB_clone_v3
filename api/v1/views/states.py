@@ -26,7 +26,7 @@ def states():
 
 
 @app_views.delete('/states/<state_id>', strict_slashes=False)
-def state_delete(state_id):    
+def state_delete(state_id):
     st = storage.get('State', state_id)
     if st:
         storage.delete(st)
