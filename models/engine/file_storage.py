@@ -76,7 +76,7 @@ class FileStorage:
         Returns the object based on the class and its ID, or None if not found
         """
         if cls and id:
-            if cls in classes.values():
+            if cls in classes.values() or cls in classes.keys():
                 all_objs_of_cls = self.all(cls)
 
                 for value in all_objs_of_cls.values():
