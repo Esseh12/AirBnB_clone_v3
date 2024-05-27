@@ -28,6 +28,7 @@ def get_amenity(amenity_id):
 
 @app_views.delete('/amenities/<amenity_id>', strict_slashes=False)
 def amenity_delete(amenity_id):
+    """delete an amenity"""
     st = storage.get('Amenity', amenity_id)
     if st:
         storage.delete(st)
@@ -38,6 +39,7 @@ def amenity_delete(amenity_id):
 
 @app_views.post('/amenities', strict_slashes=False)
 def create_amenity():
+    """create an amenity"""
     data = request.get_json()
     if not isinstance(data, dict):
         raise BadRequest(description='Not a JSON')
@@ -50,6 +52,7 @@ def create_amenity():
 
 @app_views.put('/amenities/<amenity_id>', strict_slashes=False)
 def update_amenity(amenity_id):
+    """update an amenity"""
     data = request.get_json()
     if not isinstance(data, dict):
         raise BadRequest(description='Not a JSON')
