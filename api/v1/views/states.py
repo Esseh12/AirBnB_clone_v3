@@ -7,7 +7,7 @@ from werkzeug.exceptions import NotFound
 from models import storage
 
 
-@app_views.route('/states')
+@app_views.route('/states', methods=['GET'])
 def states():
     """return api status"""
     st = storage.all('State').values()
@@ -15,7 +15,17 @@ def states():
     return jsonify(all_states)
 
 
-@app_views.route('/states/<state_id>')
+# @app_views.route('/states/<state_id>')
+# def get_state(state_id):
+#     """return api status"""
+#     st = storage.get('State', state_id)
+#     if st:
+#         return jsonify(st.to_dict())
+#     else:
+#         raise NotFound()
+
+
+@app_views.get('/states/<state_id>')
 def get_state(state_id):
     """return api status"""
     st = storage.get('State', state_id)
@@ -23,3 +33,8 @@ def get_state(state_id):
         return jsonify(st.to_dict())
     else:
         raise NotFound()
+
+@app_views.delete('/states/<state_id>')
+def state_delete(state_id):
+        st = storage.get('State', state_id)
+        storage.delete(st)
