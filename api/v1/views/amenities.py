@@ -34,7 +34,7 @@ def amenity_delete(amenity_id):
         storage.delete(st)
         return jsonify({}), 200
     else:
-        abort(404)
+        raise NotFound()
 
 
 @app_views.post('/amenities', strict_slashes=False)
@@ -60,7 +60,7 @@ def update_amenity(amenity_id):
         raise BadRequest(description="Missing name")
     st = storage.get('Amenity', amenity_id)
     if not st:
-        NotFound(404)
+        raise NotFound()
     for k, v in data.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(st, k, v)

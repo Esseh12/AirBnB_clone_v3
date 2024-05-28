@@ -33,7 +33,7 @@ def state_delete(state_id):
         storage.delete(st)
         return jsonify({}), 200
     else:
-        abort(404)
+        raise NotFound()
 
 
 @app_views.post('/states', strict_slashes=False)
@@ -57,7 +57,7 @@ def update_state(state_id):
         raise BadRequest(description="Missing name")
     st = storage.get('State', state_id)
     if not st:
-        NotFound(404)
+        raise NotFound()
     for k, v in data.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(st, k, v)
