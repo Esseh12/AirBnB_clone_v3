@@ -11,17 +11,17 @@ from models.user import User
 @app_views.get('/users', strict_slashes=False)
 def users():
     """get all users"""
-    st = storage.all('User').values()
-    all_users = [v.to_dict() for v in st]
+    users = storage.all(User).values()
+    all_users = [user.to_dict() for user in users]
     return jsonify(all_users)
 
 
 @app_views.get('/users/<user_id>')
 def get_user(user_id):
     """get a user"""
-    st = storage.get('User', user_id)
-    if st:
-        return jsonify(st.to_dict())
+    user = storage.get(User, user_id)
+    if user:
+        return jsonify(user.to_dict())
     else:
         raise NotFound()
 
@@ -29,12 +29,12 @@ def get_user(user_id):
 @app_views.delete('/users/<user_id>', strict_slashes=False)
 def user_delete(user_id):
     """delete a user"""
-    st = storage.get('User', user_id)
-    if st:
-        storage.delete(st)
+    user = storage.get('User', user_id)
+    if user:
+        storage.delete(user)
         return jsonify({}), 200
     else:
-        abort(404)
+        raise NotFound()
 
 
 @app_views.post('/users', strict_slashes=False)
@@ -59,13 +59,11 @@ def update_user(user_id):
     data = request.get_json()
     if not isinstance(data, dict):
         raise BadRequest(description='Not a JSON')
-    if 'name' not in data:
-        raise BadRequest(description="Missing name")
-    st = storage.get('User', user_id)
-    if not st:
-        NotFound(404)
+    user = storage.get(User, user_id)
+    if not user:
+        raise NotFound()
     for k, v in data.items():
         if k not in ['id', 'email', 'created_at', 'updated_at']:
-            setattr(st, k, v)
-    st.save()
-    return jsonify(st.to_dict()), 200
+            setattr(user, k, v)
+    user.save()
+    return jsonify(user.to_dict()), 200
